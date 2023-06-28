@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Wikipedia Article</title>
+    <style>
+        /* CSS code here... */
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function getNewArticle() {
+                $.ajax({
+                    url: '/get_random_article',
+                    type: 'GET',
+                    success: function(data) {
+                        $('#articleName').text(data);
+                    }
+                });
+            }
+
+            $('#openButton').click(function() {
+                var articleName = $('#articleName').text();
+                var action = $(this).attr('data-action');
+                if (action === 'open') {
+                    var url = 'https://en.wikipedia.org/wiki/' + articleName;
+                    window.open(url, '_blank');
+                } else if (action === 'another') {
+                    getNewArticle();
+                }
+            });
+
+            // Initial article retrieval
+            getNewArticle();
+        });
+    </script>
+</head>
+<body>
+    <h1>Random Wikipedia Article</h1>
+    <div id="articleContainer">
+        <p>Article Name:</p>
+        <p id="articleName"></p>
+    </div>
+    <div id="buttonContainer">
+        <button id="openButton" data-action="open">Read Article</button>
+        <button id="anotherButton" data-action="another">Read Another Article</button>
+    </div>
+</body>
+</html>
